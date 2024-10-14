@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>テストページ</title>
+    <title>CORS対応テスト</title>
     <style>
         body {
             background-color: #222;
@@ -33,7 +33,7 @@
     </style>
 </head>
 <body>
-    <h1>テストページ</h1>
+    <h1>CORS対応テストページ</h1>
     <button id="getButton">GETリクエストテスト</button>
     <button id="postButton">POSTリクエストテスト</button>
     <div id="result"></div>
@@ -44,19 +44,22 @@
 
             // GETリクエストを送信
             document.getElementById('getButton').onclick = () => {
-                fetch(GAS_URL + '?action=getScores')
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok: ' + response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        document.getElementById('result').innerText = 'GETリクエスト成功: ' + JSON.stringify(data);
-                    })
-                    .catch(error => {
-                        document.getElementById('result').innerText = 'GETリクエスト失敗: ' + error.message;
-                    });
+                fetch(GAS_URL + '?action=getScores', {
+                    method: 'GET',
+                    mode: 'cors'  // CORS対応
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('result').innerText = 'GETリクエスト成功: ' + JSON.stringify(data);
+                })
+                .catch(error => {
+                    document.getElementById('result').innerText = 'GETリクエスト失敗: ' + error.message;
+                });
             };
 
             // POSTリクエストを送信
@@ -70,14 +73,15 @@
 
                 fetch(GAS_URL, {
                     method: 'POST',
-                    body: JSON.stringify(postData),
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    body: JSON.stringify(postData),
+                    mode: 'cors'  // CORS対応
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok: ' + response.statusText);
+                        throw new Error('Network response was not ok');
                     }
                     return response.json();
                 })
