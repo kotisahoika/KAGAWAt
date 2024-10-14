@@ -2,25 +2,33 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>テストページ（香川県版）</title>
     <style>
         body {
             background-color: #222;
             color: white;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
         }
         button {
             background-color: #555;
             color: white;
             border: none;
-            padding: 10px;
+            padding: 10px 20px;
+            margin: 10px;
             cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
         }
         button:hover {
             background-color: #777;
         }
         #result {
             margin-top: 20px;
+            font-size: 1.2em;
         }
     </style>
 </head>
@@ -30,7 +38,7 @@
     <button id="postButton">POSTリクエストテスト</button>
     <div id="result"></div>
 
-    <script>
+    <script defer>
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbxVOQatWcO7xCzlc32LeDViDVgkuxOUMAEDgBGFAJM--iu0-HDyC5oBrxBaHpt8tqaurQ/exec'; // スクリプトIDを正しく設定
 
         document.getElementById('getButton').onclick = () => {
