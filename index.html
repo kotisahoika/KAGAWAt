@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>テストページ（香川県版）</title>
+    <title>香川県版 チェックインページ</title>
     <style>
         body {
             background-color: #222;
@@ -33,15 +33,14 @@
     </style>
 </head>
 <body>
-    <h1>テストページ（香川県版）</h1>
+    <h1>香川県版 チェックインページ</h1>
     <button id="getButton">GETリクエストテスト</button>
     <button id="postButton">POSTリクエストテスト</button>
     <div id="result"></div>
 
     <script defer>
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxFQw7_Q0hKzBHnk-xDZH_-44dKhot3px35kp60_csZJer4MRSnJji7jIREm-mqgObbMA/exec'; // スクリプトIDを正しく設定
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxecWAH9lVOBA0y94PeOvlM6y--pPVOE9FUMoQZuhXOPJ7aH5tg8WaDiVmJ48bii4C4lA'; // 正しいスクリプトIDを設定
 
-        // GETリクエストボタンの処理
         document.getElementById('getButton').onclick = () => {
             fetch(GAS_URL + '?action=getScores')
                 .then(response => {
@@ -60,7 +59,6 @@
                 });
         };
 
-        // POSTリクエストボタンの処理
         document.getElementById('postButton').onclick = () => {
             const postData = {
                 action: 'checkIn',
