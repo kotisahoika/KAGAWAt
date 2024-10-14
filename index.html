@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>テストページ（香川県版）</title>
+    <style>
+        body {
+            background-color: #222;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        button {
+            background-color: #555;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #777;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>テストページ（香川県版）</h1>
+    <button id="getButton">GETリクエストテスト</button>
+    <button id="postButton">POSTリクエストテスト</button>
+    <div id="result"></div>
+
+    <script>
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxu3OCRFkIaaCAxzV_a0GbV4RqSkuFJm8QfcelV6gad3j5JxUWNVZOc4WJHC-D-enYsqQ/exec'; // 正しいURLを指定
+
+        document.getElementById('getButton').onclick = () => {
+            fetch(GAS_URL + '?action=getScores')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerText = 
+                        'GETリクエスト成功: ' + JSON.stringify(data);
+                })
+                .catch(error => {
+                    document.getElementById('result').innerText = 
+                        'GETリクエスト失敗: ' + error;
+                });
+        };
+
+        document.getElementById('postButton').onclick = () => {
+            const postData = {
+                action: 'checkIn',
+                team: 'チームA', // チーム名
+                location: '香川県庁', // 場所
+                points: 150 // ポイント
+            };
+
+            fetch(GAS_URL, {
+                method: 'POST',
+                body: JSON.stringify(postData),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 
+                    'POSTリクエスト成功: ' + JSON.stringify(data);
+            })
+            .catch(error => {
+                document.getElementById('result').innerText = 
+                    'POSTリクエスト失敗: ' + error;
+            });
+        };
+    </script>
+</body>
+</html>
