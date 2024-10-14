@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>香川県版 チェックインページ</title>
+    <title>テストページ</title>
     <style>
         body {
             background-color: #222;
@@ -33,16 +33,48 @@
     </style>
 </head>
 <body>
-    <h1>香川県版 チェックインページ</h1>
+    <h1>テストページ</h1>
     <button id="getButton">GETリクエストテスト</button>
     <button id="postButton">POSTリクエストテスト</button>
     <div id="result"></div>
 
     <script defer>
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxecWAH9lVOBA0y94PeOvlM6y--pPVOE9FUMoQZuhXOPJ7aH5tg8WaDiVmJ48bii4C4lA'; // 正しいスクリプトIDを設定
+        document.addEventListener("DOMContentLoaded", function() {
+            const GAS_URL = 'https://script.google.com/macros/s/あなたのスクリプトID/exec'; // 正しいスクリプトIDを設定
 
-        document.getElementById('getButton').onclick = () => {
-            fetch(GAS_URL + '?action=getScores')
+            // GETリクエストを送信
+            document.getElementById('getButton').onclick = () => {
+                fetch(GAS_URL + '?action=getScores')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        document.getElementById('result').innerText = 'GETリクエスト成功: ' + JSON.stringify(data);
+                    })
+                    .catch(error => {
+                        document.getElementById('result').innerText = 'GETリクエスト失敗: ' + error.message;
+                    });
+            };
+
+            // POSTリクエストを送信
+            document.getElementById('postButton').onclick = () => {
+                const postData = {
+                    action: 'checkIn',
+                    team: 'チームA', // チーム名
+                    location: '香川県庁', // 場所
+                    points: 150 // チェックインする際のポイント
+                };
+
+                fetch(GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(postData),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok: ' + response.statusText);
@@ -50,45 +82,13 @@
                     return response.json();
                 })
                 .then(data => {
-                    document.getElementById('result').innerText = 
-                        'GETリクエスト成功: ' + JSON.stringify(data);
+                    document.getElementById('result').innerText = 'POSTリクエスト成功: ' + JSON.stringify(data);
                 })
                 .catch(error => {
-                    document.getElementById('result').innerText = 
-                        'GETリクエスト失敗: ' + error.message; // エラーメッセージを表示
+                    document.getElementById('result').innerText = 'POSTリクエスト失敗: ' + error.message;
                 });
-        };
-
-        document.getElementById('postButton').onclick = () => {
-            const postData = {
-                action: 'checkIn',
-                team: 'チームA', // チーム名
-                location: '香川県庁', // 場所
-                points: 150 // チェックインする際のポイント
             };
-
-            fetch(GAS_URL, {
-                method: 'POST',
-                body: JSON.stringify(postData),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('result').innerText = 
-                    'POSTリクエスト成功: ' + JSON.stringify(data);
-            })
-            .catch(error => {
-                document.getElementById('result').innerText = 
-                    'POSTリクエスト失敗: ' + error.message; // エラーメッセージを表示
-            });
-        };
+        });
     </script>
 </body>
 </html>
