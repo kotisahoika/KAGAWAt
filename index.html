@@ -31,18 +31,23 @@
     <div id="result"></div>
 
     <script>
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxVOQatWcO7xCzlc32LeDViDVgkuxOUMAEDgBGFAJM--iu0-HDyC5oBrxBaHpt8tqaurQ/exec'; // 正しいURLを指定
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxVOQatWcO7xCzlc32LeDViDVgkuxOUMAEDgBGFAJM--iu0-HDyC5oBrxBaHpt8tqaurQ/exec'; // スクリプトIDを正しく設定
 
         document.getElementById('getButton').onclick = () => {
             fetch(GAS_URL + '?action=getScores')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     document.getElementById('result').innerText = 
                         'GETリクエスト成功: ' + JSON.stringify(data);
                 })
                 .catch(error => {
                     document.getElementById('result').innerText = 
-                        'GETリクエスト失敗: ' + error;
+                        'GETリクエスト失敗: ' + error.message; // エラーメッセージを表示
                 });
         };
 
@@ -51,7 +56,7 @@
                 action: 'checkIn',
                 team: 'チームA', // チーム名
                 location: '香川県庁', // 場所
-                points: 150 // ポイント
+                points: 150 // チェックインする際のポイント
             };
 
             fetch(GAS_URL, {
@@ -61,14 +66,19 @@
                     'Content-Type': 'application/json'
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
             .then(data => {
                 document.getElementById('result').innerText = 
                     'POSTリクエスト成功: ' + JSON.stringify(data);
             })
             .catch(error => {
                 document.getElementById('result').innerText = 
-                    'POSTリクエスト失敗: ' + error;
+                    'POSTリクエスト失敗: ' + error.message; // エラーメッセージを表示
             });
         };
     </script>
